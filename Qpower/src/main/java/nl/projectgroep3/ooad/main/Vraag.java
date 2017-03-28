@@ -3,31 +3,21 @@ package nl.projectgroep3.ooad.main;
 /**
  * Created by Tom van Grinsven on 3/28/2017.
  */
-public class Vraag {
-
-    private Antwoord antwoord;
-
-    public Vraag(String vraag, int tijd) {
-        this.vraag = vraag;
-        this.tijd = tijd;
-    }
+public abstract class Vraag {
 
     private String vraag;
-    private int tijd;
+
+    public Vraag(String vraag) {
+        this.vraag = vraag;
+    }
 
     public String getVraag(){
-        return null;
+        return vraag;
     }
 
-    public void setAnswer(){
+    abstract void setAnswer(String input, int tijd);
 
-    }
+    abstract boolean checkAnswer(String input, int tijd);
 
-    public boolean checkAnswer(){
-        return true;
-    }
-
-    public Antwoord getAnswer(){
-        return null;
-    }
+    abstract Antwoord getAnswer();
 }
