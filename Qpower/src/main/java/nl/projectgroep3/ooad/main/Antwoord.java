@@ -10,7 +10,17 @@ public class Antwoord {
     private int tijd;
     private int score;
 
+    public Antwoord(String gegevenAntwoord, boolean isCorrect, int tijd) {
+        this.gegevenAntwoord = gegevenAntwoord;
+        this.isCorrect = isCorrect;
+        this.tijd = tijd;
+    }
+
     public int getScore(){
         return 0;
+    }
+
+    public boolean isCorrect(){
+        return isCorrect;
     }
 }
