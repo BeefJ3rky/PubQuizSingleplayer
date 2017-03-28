@@ -5,21 +5,57 @@ package nl.projectgroep3.ooad.main;
  */
 public class Ronde {
 
-    private String Rubriek;
+    private int rubriek;
+    private Vraag[] vragen;
+    private int huidigeVraag;
 
-    private boolean checkDoubleQuestion(){
-        return true;
+    public Ronde(int rubriek){
+        this.rubriek = rubriek;
+        vragen = getQuestions(rubriek);
+        huidigeVraag = 0;
+    }
+
+    private Vraag[] getQuestions(int rubriek){
+        Vraag[] output = new Vraag[16];
+        QuizData data = new QuizData();
+        String[] answers = {"Frits", "Henk", "Gerard", "Harry"}; //TODO uit datastore lezen
+        for (int i = 0; i < output.length; i++){
+            String vraag = data.getQuestions(rubriek);
+            if (checkDoubleQuestion(vraag)){
+                Vraag vrg = new OpenVraag(vraag, answers);
+            }else{
+                i -= 1;
+            }
+        }
+        return output;
+    }
+
+    private boolean checkDoubleQuestion(String vraag){
+        boolean output = true;
+        for (Vraag vrg : vragen) {
+            if(vraag == vrg.getVraag()){
+                output = false;
+            }
+        }
+        return output;
     }
 
     public Vraag getNextQuestion(){
-        return null;
+        if(huidigeVraag < 16){
+            huidigeVraag++;
+        }
+        return vragen[huidigeVraag];
     }
 
-    public boolean checkAnswer(String answer){
-        return true;
+    public boolean checkAnswer(String answer, int time){
+        return vragen[huidigeVraag].checkAnswer(answer, time);
     }
 
-    public int calculateScore(){
-        return 0;
+    public int calculateScore(){ //TODO score calculator implementeren
+        int output = 0;
+        for (Vraag vraag : vragen){
+            output += vraag.getAnswer().getScore();
+        }
+        return output;
     }
 }
