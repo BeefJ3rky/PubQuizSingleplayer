@@ -2,6 +2,8 @@ import nl.projectgroep3.ooad.main.QuizData;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Arrays;
+
 import static junit.framework.TestCase.assertTrue;
 
 /**
@@ -18,10 +20,9 @@ public class testDatabase {
     
     @Test
     public void testGetQuestions(){
-
-        for (int i = 0; i < 16 ; i++) {
-            System.out.println(i + sut.getQuestions(0));
-            
+        for(int j = 0; j < 16; j++){
+            String[] question = sut.getQuestions(0);
+            System.out.println(Arrays.toString(question));
         }
     }
 }
