@@ -1,7 +1,7 @@
 package nl.projectgroep3.ooad.main;
 
 /**
- * Created by Tom van Grinsven on 3/28/2017.
+ * Created by Tom van Grinsven & Dion Rats on 3/28/2017.
  */
 public abstract class Vraag {
 
@@ -15,9 +15,11 @@ public abstract class Vraag {
         return vraag;
     }
 
-    abstract void setAnswer(String input, int tijd);
+    abstract void setAnswer(String input, long tijd);
 
-    abstract boolean checkAnswer(String input, int tijd);
+    abstract boolean checkAnswer(String input, long tijd);
 
     abstract Antwoord getAnswer();
+
+    abstract int getMaxTime();
 }

@@ -3,29 +3,36 @@ package nl.projectgroep3.ooad.main;
 import java.util.ArrayList;
 
 /**
- * Created by Tom van Grinsven on 3/28/2017.
+ * Created by Tom van Grinsven & Dion Rats on 3/28/2017.
  */
 public class Quiz {
 
+    public static final int START_SCORE = 0;
     private ArrayList<Ronde> rondes;
+    private int huidigeRonde;
 
-    public Quiz(ArrayList<Ronde> rondes) {
-        this.rondes = rondes;
+    public Quiz(int aantalRondes, int[] rubrieken) {
+        rondes = new ArrayList<Ronde>();
+        for (int i = 0; i < aantalRondes; i++) {
+            rondes.add(new Ronde(rubrieken[i]));
+        }
+        huidigeRonde = 0;
     }
 
     public Vraag getQuestion(){
-        for (Ronde ronde :
-                rondes) {
-            return ronde.getNextQuestion();
-        }
-        return null;
+        return rondes.get(huidigeRonde).getNextQuestion();
     }
 
     public int getScore(){
+        int output = START_SCORE;
         for (Ronde ronde :
                 rondes) {
-            return ronde.calculateScore();
+            output += ronde.calculateScore();
         }
-        return 0;
+        return output;
+    }
+
+    public void answerQuestion(String answer, long time){
+        rondes.get(huidigeRonde).checkAnswer(answer, time);
     }
 }

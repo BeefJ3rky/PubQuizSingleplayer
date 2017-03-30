@@ -1,11 +1,11 @@
 package nl.projectgroep3.ooad.main;
 
 /**
- * Created by Tom van Grinsven on 3/28/2017.
+ * Created by Tom van Grinsven & Dion Rats on 3/28/2017.
  */
 public class MeerkeuzeVraag extends Vraag {
 
-    private static final int TIME = 60;
+    private static final int MAX_TIME = 60000;
 
     private String[] antwoorden;
     private int correctAntwoord;
@@ -16,9 +16,18 @@ public class MeerkeuzeVraag extends Vraag {
         super(vraag);
         this.antwoorden = antwoorden;
         this.correctAntwoord = correctAntwoord;
+        antwoord = null;
     }
 
-    void setAnswer(String input, int tijd) {
+    public int getMaxTime() {
+        return MAX_TIME;
+    }
+
+    public String[] getAntwoorden(){
+        return antwoorden;
+    }
+
+    public void setAnswer(String input, long tijd) {
         boolean correct = false;
         for (int i = 0; i < antwoorden.length; i++) {
             if(antwoorden[correctAntwoord] == input){
@@ -26,10 +35,10 @@ public class MeerkeuzeVraag extends Vraag {
                 break;
             }
         }
-        antwoord = new Antwoord(input, correct, tijd);
+        antwoord = new Antwoord(input, correct, tijd, MAX_TIME);
     }
 
-    boolean checkAnswer(String input, int tijd) {
+    public boolean checkAnswer(String input, long tijd) {
         if(antwoord != null){
             return antwoord.isCorrect();
         }else{
@@ -38,7 +47,7 @@ public class MeerkeuzeVraag extends Vraag {
         }
     }
 
-    Antwoord getAnswer() {
+    public Antwoord getAnswer() {
         return antwoord;
     }
 }

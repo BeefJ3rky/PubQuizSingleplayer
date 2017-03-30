@@ -1,12 +1,12 @@
 package nl.projectgroep3.ooad.main;
 
 /**
- * Created by Tom van Grinsven on 3/28/2017.
+ * Created by Tom van Grinsven & Dion Rats on 3/28/2017.
  */
 public class OpenVraag extends Vraag {
 
 
-    private static final int TIME = 120;
+    private static final int MAX_TIME = 120000;
 
     private String[] antwoorden;
     private Antwoord antwoord;
@@ -14,9 +14,14 @@ public class OpenVraag extends Vraag {
     public OpenVraag(String vraag, String[] antwoorden) {
         super(vraag);
         this.antwoorden = antwoorden;
+        antwoord = null;
     }
 
-    protected void setAnswer(String input, int tijd){
+    public int getMaxTime() {
+        return MAX_TIME;
+    }
+
+    protected void setAnswer(String input, long tijd){
         boolean correct = false;
         for (String antwoord: antwoorden) {
             if(antwoord == input){
@@ -24,11 +29,12 @@ public class OpenVraag extends Vraag {
                 break;
             }
         }
-        antwoord = new Antwoord(input, correct, tijd);
+        antwoord = new Antwoord(input, correct, tijd, MAX_TIME);
     }
 
 
-    public boolean checkAnswer(String input, int tijd){
+    public boolean checkAnswer(String input, long tijd){
+
         if(antwoord != null){
             return antwoord.isCorrect();
         }else{

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * Created by Tom van Grinsven on 3/28/2017.
+ * Created by Tom van Grinsven & Dion Rats on 3/28/2017.
  */
 @SuppressWarnings("ALL")
 public class Ronde {
@@ -12,11 +12,13 @@ public class Ronde {
     private int rubriek;
     private ArrayList<Vraag> vragen;
     private int huidigeVraag;
+    private IScoreCalculator scoreCalculator;
 
     public Ronde(int rubriek){
         this.rubriek = rubriek;
         vragen = new ArrayList<Vraag>();
         vragen = getQuestions(rubriek);
+        scoreCalculator = ScoreCalculatorFactory.getInstance(ScoreCalculatorType.simple);
         huidigeVraag = 0;
     }
 
@@ -38,7 +40,6 @@ public class Ronde {
                     vrg = new MeerkeuzeVraag(vraag_data[0], answers, 0);
                 }
                 output.add(vrg);
-                System.out.println(Arrays.toString(vraag_data));
             }else{
                 i -= 1;
             }
@@ -57,21 +58,22 @@ public class Ronde {
     }
 
     public Vraag getNextQuestion(){
+        Vraag output = vragen.get(huidigeVraag);
         if(huidigeVraag < 16){
             huidigeVraag++;
         }
-        return vragen.get(huidigeVraag);
+        return output;
     }
 
-    public boolean checkAnswer(String answer, int time){
-
-        return vragen.get(huidigeVraag).checkAnswer(answer, time);
+    public boolean checkAnswer(String answer, long time){
+        boolean output = vragen.get(huidigeVraag-1).checkAnswer(answer, time);
+        return output;
     }
 
-    public int calculateScore(){ //TODO score calculator implementeren
+    public int calculateScore(){
         int output = 0;
-        for (Vraag vraag : vragen){
-            output += vraag.getAnswer().getScore();
+        for (int i = 0; i < vragen.size(); i++) {
+            output += vragen.get(i).getAnswer().getScore(scoreCalculator);
         }
         return output;
     }

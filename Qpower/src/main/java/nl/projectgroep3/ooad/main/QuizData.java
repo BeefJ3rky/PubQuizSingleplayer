@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 /**
- * Created by Tom van Grinsven & Ya Boy Dion, Like wadduup on 3/28/2017.
+ * Created by Tom van Grinsven & Dion Rats on 3/28/2017.
  */
 
 public class QuizData implements IPersistence {
