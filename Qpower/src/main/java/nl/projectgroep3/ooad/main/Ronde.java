@@ -1,28 +1,44 @@
 package nl.projectgroep3.ooad.main;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
  * Created by Tom van Grinsven on 3/28/2017.
  */
+@SuppressWarnings("ALL")
 public class Ronde {
 
     private int rubriek;
-    private Vraag[] vragen;
+    private ArrayList<Vraag> vragen;
     private int huidigeVraag;
 
     public Ronde(int rubriek){
         this.rubriek = rubriek;
+        vragen = new ArrayList<Vraag>();
         vragen = getQuestions(rubriek);
         huidigeVraag = 0;
     }
 
-    private Vraag[] getQuestions(int rubriek){
-        Vraag[] output = new Vraag[16];
+    public ArrayList<Vraag> getVragen(){
+        return vragen;
+    }
+
+    private ArrayList<Vraag> getQuestions(int rubriek){
+        ArrayList<Vraag> output = new ArrayList<Vraag>();
         QuizData data = new QuizData();
-        String[] answers = {"Frits", "Henk", "Gerard", "Harry"}; //TODO uit datastore lezen
-        for (int i = 0; i < output.length; i++){
-            String vraag = data.getQuestions(rubriek);
-            if (checkDoubleQuestion(vraag)){
-                Vraag vrg = new OpenVraag(vraag, answers);
+        for (int i = 0; i < 16; i++){
+            String[] vraag_data = data.getQuestions(rubriek);
+            String[] answers = Arrays.copyOfRange(vraag_data, 2, vraag_data.length);
+            if (checkDoubleQuestion(vraag_data[0], output)){
+                Vraag vrg;
+                if(vraag_data[1] == "O"){
+                    vrg = new OpenVraag(vraag_data[0], answers);
+                }else{
+                    vrg = new MeerkeuzeVraag(vraag_data[0], answers, 0);
+                }
+                output.add(vrg);
+                System.out.println(Arrays.toString(vraag_data));
             }else{
                 i -= 1;
             }
@@ -30,10 +46,10 @@ public class Ronde {
         return output;
     }
 
-    private boolean checkDoubleQuestion(String vraag){
+    private boolean checkDoubleQuestion(String vraag, ArrayList<Vraag> vragen){
         boolean output = true;
-        for (Vraag vrg : vragen) {
-            if(vraag == vrg.getVraag()){
+        for (int i = 0; i < vragen.size(); i++) {
+            if(vraag == vragen.get(i).getVraag()){
                 output = false;
             }
         }
@@ -44,11 +60,12 @@ public class Ronde {
         if(huidigeVraag < 16){
             huidigeVraag++;
         }
-        return vragen[huidigeVraag];
+        return vragen.get(huidigeVraag);
     }
 
     public boolean checkAnswer(String answer, int time){
-        return vragen[huidigeVraag].checkAnswer(answer, time);
+
+        return vragen.get(huidigeVraag).checkAnswer(answer, time);
     }
 
     public int calculateScore(){ //TODO score calculator implementeren
